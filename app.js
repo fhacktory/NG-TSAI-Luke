@@ -1,7 +1,10 @@
+const config = require('./config');
+
 const RtmClient = require('@slack/client').RtmClient;
 
-const token = 'xoxb-86296793158-U7hweVJjOKDGyTWVORJPIXww';
+const token = config.key;
 
+console.log(token)
 const rtm = new RtmClient(token, {logLevel: 'debug'});
 rtm.start();
 
