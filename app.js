@@ -2,8 +2,8 @@ const config = require('./config');
 const mongoose = require('mongoose');
 
 //getUserById -> userid, rtm
-const userService = require("./user-service.js");
-const listen = require('./app/listen');
+const listen = require('./app/listen-service');
+const userService = require('./app/services/user-service');
 
 const RtmClient = require('@slack/client').RtmClient;
 
@@ -11,8 +11,10 @@ const RtmClient = require('@slack/client').RtmClient;
 const MemoryDataStore = require('@slack/client').MemoryDataStore;
 
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
-const rtm = new RtmClient(config.key, {
+rtm = new RtmClient(config.key, {
     // Sets the level of logging we require
     logLevel: config.logLevel,
     // Initialise a data store for our client, this will load additional helper functions for the storing and retrieval of data
@@ -24,11 +26,11 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
     console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
 });
 
-const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
-const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
-
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	listen.listeToSuze(message);
+	var result = listen.listenToSuze(message);
+	if (null !== result) {
+		rtm.sendMessage(userService.getUserById(result.user).name+" s'est fait pwed par "+userService.getUserById(result.pwner).name, 'C2J8W4RK4');
+	}
 });
 
 // you need to wait for the client to fully connect before you can send messages
@@ -38,3 +40,9 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
         // optionally, you can supply a callback to execute once the message has been sent
     });
 });
+
+userService.getUserList()
+    .then(res => console.log(res))
+    .catch(e => console.error(e));
+
+rtm.start();
