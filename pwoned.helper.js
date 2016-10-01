@@ -1,4 +1,4 @@
-'user strict'
+'use strict'
 
 const path = process.cwd();
 const Pwoned = require(path + '/pwoned.model.js')
