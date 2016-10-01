@@ -1,5 +1,6 @@
 const config = require('./config');
 const mongoose = require('mongoose');
+
 //getUserById -> userid, rtm
 const userService = require("./user-service.js");
 const listen = require('./app/listen');
@@ -9,8 +10,6 @@ const RtmClient = require('@slack/client').RtmClient;
 // The memory data store is a collection of useful functions we can include in our RtmClient
 const MemoryDataStore = require('@slack/client').MemoryDataStore;
 
-rtm.start();
-
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
 const rtm = new RtmClient(config.key, {
@@ -19,6 +18,7 @@ const rtm = new RtmClient(config.key, {
     // Initialise a data store for our client, this will load additional helper functions for the storing and retrieval of data
     dataStore: new MemoryDataStore()
 });
+rtm.start();
 
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
     console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
@@ -26,7 +26,6 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
-
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 	listen.listeToSuze(message);
