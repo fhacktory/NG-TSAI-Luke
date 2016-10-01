@@ -7,10 +7,10 @@ export function requestRanking() {
     }
 }
 
-export function receiveRanking(json) {
+export function receiveRanking(data) {
     return {
         type: RECEIVE_RANKING,
-        rankings: json.data.children.map(child => child.data),
+        rankings: data.map(rank => rank),
         receivedAt: Date.now()
     }
 }
