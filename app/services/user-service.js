@@ -13,5 +13,10 @@ module.exports = {
     getUserById: function(userid) {
         const user = rtm.dataStore.getUserById(userid);
         return user;
+    },
+    getDMById: function(userid) {
+          var user = rtm.dataStore.getUserById(userid);
+          var dm = rtm.dataStore.getDMByName(user.name);
+          return dm;
     }
 };

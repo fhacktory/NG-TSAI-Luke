@@ -63,7 +63,8 @@ module.exports = {
 			        	result.forEach(function(element) {
 			        		ranking += "<@"+element['idSlack']+"> "+element['points']+"\n";
 			        	});
-			            rtm.sendMessage(ranking, message.channel);
+			        	var dm = userService.getDMById(message.user);
+			            rtm.sendMessage(ranking, dm.id);
 			        }
 			    });
 		}
