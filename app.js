@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 //getUserById -> userid, rtm
 const listen = require('./app/listen-service');
 const userService = require('./app/services/user-service');
+const userManager = require('./app/managers/user-manager');
+//userManager.registerUsersFromWs();
 
 const RtmClient = require('@slack/client').RtmClient;
 

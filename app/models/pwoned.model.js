@@ -9,7 +9,7 @@ const Pwoned = new Schema({
     idSlack: String,
     firstName: String,
     lastName: String,
-    points: {type: int, default: 100}
+    points: {type: Number, default: 100}
 });
 
 module.exports = mongoose.model('Pwoned', Pwoned);
