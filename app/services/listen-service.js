@@ -1,4 +1,5 @@
 const userService = require('./user-service');
+const Pwoned = require('../models/pwoned.model.js');
 var player = require('play-sound')(opts = {})
 var last = [];
 
@@ -46,7 +47,23 @@ module.exports = {
 		if (nbMessage >= 8 && lastMessage === 3) {
 			rtm.sendMessage("Tu parles seul <@"+message.user+"> !", message.channel);
 		}
+	},
+	listenResult: function(message) {
+		console.log("test", message);
+		if (message.text === 'result') {
+			var ranking = '';
+			Pwoned
+			    .find()
+			    .exec((err, result) =>{
+			        if (err){
+			            res.send(err)
+			        } else {
+			        	result.forEach(function(element) {
+			        		ranking += "<@"+element['idSlack']+"> "+element['points']+"\n";
+			        	});
+			            rtm.sendMessage(ranking, message.channel);
+			        }
+			    });
+		}
 	}
-
-
 }

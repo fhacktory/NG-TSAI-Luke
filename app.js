@@ -64,6 +64,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 	listen.listenToSuze(message);
 	listen.listenRandom(message);
 	listen.listenAlone(message);
+    listen.listenResult(message);
 });
 
 // you need to wait for the client to fully connect before you can send messages
