@@ -7,7 +7,7 @@ module.exports = {
             .then(function (members) {
                 members.forEach(member => {
                     let log = [];
-                    log.push('Create date: ' + Date.now);
+                    log.push('Create date: ' + Date.now());
                     if (member.profile.email) {
                         let user = {
                             username: member.name,
