@@ -23,6 +23,6 @@ const getUser = (username) => {
             .exec((err, result) => return result)
         }
 }
-module.exports = create;
-module.exports = addPoint;
-module.exports = getUser;
+module.exports = {create: create,
+    addPoint: addPoint,
+    getUser: getUser}
