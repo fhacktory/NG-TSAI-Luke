@@ -9,10 +9,10 @@ const style = {
 
 const Rankings = ({rankings}) => (
     <List style={style}>
-        {rankings.map(rank =>
+        {rankings.map((rank, i) =>
             <ListItem key={rank._id}
-                      leftAvatar={<Avatar src={rank.img_24} />}
-                      primaryText={rank.username}
+                      leftAvatar={<Avatar src={rank.img_24}/>}
+                      primaryText={`N°: ${i + 1} - ${rank.username}`}
                       secondaryText={rank.points + ' points'}
                       rightIcon={<ActionInfo />}
             />
