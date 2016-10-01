@@ -25,6 +25,9 @@ const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
 
 const pwonedHelper = require('./pwoned.helper');
+
+pwonedHelper.getUser('gabriel').then(user => console.log(user));
+pwonedHelper.addPoint('gabriel', 100);
 pwonedHelper.getUser('gabriel').then(user => console.log(user));
 
 const RtmClient = require('@slack/client').RtmClient;

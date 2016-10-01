@@ -12,14 +12,16 @@ const create = (username, email) => {
 }
 
 const addPoint = (username, points) => {
-    const condition = {username: username},
-        update = {$inc: {points: points}}
-    Pwoned.update(conditions, update, options, callback)
+    const conditions = {username: username}
+    const update = {$inc: {points: points}}
+    const options = { multi: false };
+    console.log(conditions, update, options)
+    Pwoned.update(conditions, update, options, (err, value) => {})
 }
 
 const getUser = (username) => {
     return Pwoned
-        .find({username: username})
+        .findOne({username: username})
         .exec()
 }
 
