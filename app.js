@@ -7,8 +7,17 @@ mongoose.connect('localhost', 'suzette');
 \*--------------------------------------------------*/
 const express = require('express');
 const app = express();
+const router = require('./app/routes/main')
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 app.use(express.static('public'));
+
+app.use('/', router);
 
 app.listen(3000, function () {
     console.log('App listening on port 3000!');
