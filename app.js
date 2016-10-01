@@ -1,17 +1,17 @@
-var RtmClient = require('@slack/client').RtmClient;
+const RtmClient = require('@slack/client').RtmClient;
 
-var token = 'xoxb-86296793158-U7hweVJjOKDGyTWVORJPIXww';
+const token = 'xoxb-86296793158-U7hweVJjOKDGyTWVORJPIXww';
 
-var rtm = new RtmClient(token, {logLevel: 'debug'});
+const rtm = new RtmClient(token, {logLevel: 'debug'});
 rtm.start();
 
-var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
     console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
 });
 
-var RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
     // Listens to all `message` events from the team
@@ -21,7 +21,7 @@ rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
     // Listens to all `channel_created` events from the team
 });
 
-var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
+const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
