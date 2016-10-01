@@ -1,5 +1,5 @@
 const config = require('./config');
-
+const mongoose = require('mongoose');
 const RtmClient = require('@slack/client').RtmClient;
 
 const token = config.key;

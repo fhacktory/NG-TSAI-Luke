@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@slack/client": "^3.6.0"
+    "@slack/client": "^3.6.0",
+    "mongoose": "^4.4.5"
   }
 }
