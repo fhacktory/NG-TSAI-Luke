@@ -1,13 +1,21 @@
 import React from 'react';
+import {List, ListItem} from 'material-ui/List';
+import ActionInfo from 'material-ui/svg-icons/action/info';
+
+const style = {
+    maxWidth: 300
+};
 
 const Rankings = ({rankings}) => (
-    <ul>
+    <List style={style}>
         {rankings.map(rank =>
-            <li key={rank._id}>
-                {rank.username} : {rank.points}
-            </li>
+            <ListItem key={rank._id}
+                      primaryText={rank.username}
+                      secondaryText={rank.points + ' points'}
+                      rightIcon={<ActionInfo />}
+            />
         )}
-    </ul>
+    </List>
 );
 
 export default Rankings;
