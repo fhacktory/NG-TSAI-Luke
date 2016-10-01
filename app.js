@@ -4,7 +4,7 @@ mongoose.connect('localhost', 'suzette');
 
 
 //getUserById -> userid, rtm
-const listen = require('./app/listen-service');
+const listen = require('./app/services/listen-service');
 const userService = require('./app/services/user-service');
 const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
@@ -34,10 +34,7 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	var result = listen.listenToSuze(message);
-	if (null !== result) {
-		rtm.sendMessage(userService.getUserById(result.user).name+" s'est fait pwed par "+userService.getUserById(result.pwner).name, 'C2J8W4RK4');
-	}
+	listen.listenToSuze(message);
 });
 
 // you need to wait for the client to fully connect before you can send messages
