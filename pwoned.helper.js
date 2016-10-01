@@ -11,4 +11,4 @@ const create  =  (username, email) =>{
         Pwoned.create(user)
 }
 
-module.exports = recipeHandler;
+module.exports = create;
