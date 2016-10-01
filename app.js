@@ -1,14 +1,22 @@
 const config = require('./config');
+//getUserById -> userid, rtm
+var userService = require("./user-service.js");
 
-const RtmClient = require('@slack/client').RtmClient;
+var RtmClient = require('@slack/client').RtmClient;
 
-const token = config.key;
+// The memory data store is a collection of useful functions we can include in our RtmClient
+var MemoryDataStore = require('@slack/client').MemoryDataStore;
 
-console.log(token)
-const rtm = new RtmClient(token, {logLevel: 'debug'});
-rtm.start();
+var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 
-const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+var token = config.key;
+
+var rtm = new RtmClient(token, {
+    // Sets the level of logging we require
+    logLevel: 'error',
+    // Initialise a data store for our client, this will load additional helper functions for the storing and retrieval of data
+    dataStore: new MemoryDataStore()
+});
 
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
     console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
@@ -24,12 +32,4 @@ rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
     // Listens to all `channel_created` events from the team
 });
 
-const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
-
-// you need to wait for the client to fully connect before you can send messages
-rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
-    // This will send the message 'this is a test message' to the channel identified by id 'C0CHZA86Q'
-    rtm.sendMessage('gabriel va rater son annee', 'C2J8W4RK4', function messageSent() {
-        // optionally, you can supply a callback to execute once the message has been sent
-    });
-});
+rtm.start();
