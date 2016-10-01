@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 
 const Pwoned = new Schema({
     username: String,
-    email: {type: String, unique: true}
+    email: {type: String, unique: true},
+    points: {type:int, default: 100}
 });
 
 
