@@ -1,6 +1,6 @@
 var RtmClient = require('@slack/client').RtmClient;
 
-var token = 'xoxb-86296793158-iNHJbR1flSkdM9oHaC9pn5lS';
+var token = 'xoxb-86296793158-U7hweVJjOKDGyTWVORJPIXww';
 
 var rtm = new RtmClient(token, {logLevel: 'debug'});
 rtm.start();
@@ -26,7 +26,7 @@ var RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     // This will send the message 'this is a test message' to the channel identified by id 'C0CHZA86Q'
-    rtm.sendMessage('Mathieu va me donner toute sa fortune', 'C2J8W4RK4', function messageSent() {
+    rtm.sendMessage('gabriel va rater son annee', 'C2J8W4RK4', function messageSent() {
         // optionally, you can supply a callback to execute once the message has been sent
     });
 });
