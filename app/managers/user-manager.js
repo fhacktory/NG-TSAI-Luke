@@ -6,7 +6,7 @@ module.exports = {
         userManager.getUserList()
             .then(function (members) {
                 members.forEach(member => {
-                  console.log(member)
+                    log.push('Create date: '+Date.now)
                     if (member.profile.email) {
                         let user = {
                             username: member.name,
@@ -14,7 +14,8 @@ module.exports = {
                             idSlack: member.id,
                             firstName: member.profile.first_name,
                             lastName: member.profile.last_name,
-                            points: 100
+                            points: 100,
+                            log : log
                         };
                         Pwoned.create(user, function(err, user) {
                             //TODO
