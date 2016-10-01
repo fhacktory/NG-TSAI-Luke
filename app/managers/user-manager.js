@@ -6,16 +6,18 @@ module.exports = {
         userManager.getUserList()
             .then(function (members) {
                 members.forEach(member => {
-                    if (member.profile.first_name) {
+                    if (member.profile.email) {
                         let user = {
                             username: member.name,
-                            email: member.email,
+                            email: member.profile.email,
                             idSlack: member.id,
                             firstName: member.profile.first_name,
                             lastName: member.profile.last_name,
                             points: 100
                         };
-                        Pwoned.create(user);
+                        Pwoned.create(user, function(err, user) {
+                            //TODO
+                        });
                     }
                 })
             });

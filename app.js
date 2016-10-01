@@ -1,11 +1,16 @@
 const config = require('./config');
 const mongoose = require('mongoose');
+mongoose.connect('localhost', 'suzette');
+
 
 //getUserById -> userid, rtm
 const listen = require('./app/listen-service');
 const userService = require('./app/services/user-service');
 const userManager = require('./app/managers/user-manager');
-//userManager.registerUsersFromWs();
+userManager.registerUsersFromWs();
+
+const pwonedHelper = require('./pwoned.helper');
+pwonedHelper.getUser('gabriel').then(user => console.log(user));
 
 const RtmClient = require('@slack/client').RtmClient;
 
@@ -43,8 +48,3 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     });
 });
 
-userService.getUserList()
-    .then(res => console.log(res))
-    .catch(e => console.error(e));
-
-rtm.start();

@@ -1,9 +1,9 @@
 'use strict'
 
 const path = process.cwd();
-const Pwoned = require(path + '/pwoned.model.js')
+const Pwoned = require(path + '/app/models/pwoned.model.js')
 
-const create  =  (username, email) =>{
+const create = (username, email) => {
     var user = {
         username: username,
         email: email
@@ -18,11 +18,13 @@ const addPoint = (username, points) => {
 }
 
 const getUser = (username) => {
-    Pwoned
-        .find({username: username}
-            .exec((err, result) => return result)
-        }
+    return Pwoned
+        .find({username: username})
+        .exec()
 }
-module.exports = {create: create,
+
+module.exports = {
+    create: create,
     addPoint: addPoint,
-    getUser: getUser}
+    getUser: getUser
+}
