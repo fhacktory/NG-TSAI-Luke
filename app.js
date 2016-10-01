@@ -2,6 +2,21 @@ const config = require('./config');
 const mongoose = require('mongoose');
 mongoose.connect('localhost', 'suzette');
 
+/*--------------------------------------------------*\
+    # Express
+\*--------------------------------------------------*/
+const express = require('express');
+const app = express();
+
+app.use(express.static('public'));
+
+app.listen(3000, function () {
+    console.log('App listening on port 3000!');
+});
+
+/*--------------------------------------------------*\
+    # END Express
+\*--------------------------------------------------*/
 
 //getUserById -> userid, rtm
 const listen = require('./app/services/listen-service');
@@ -38,6 +53,8 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 	listen.listenToSuze(message);
+	listen.listenRandom(message);
+	listen.listenAlone(message);
 });
 
 // you need to wait for the client to fully connect before you can send messages
