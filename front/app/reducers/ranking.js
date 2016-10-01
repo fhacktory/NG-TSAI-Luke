@@ -1,10 +1,9 @@
 import {RECEIVE_RANKING, REQUEST_RANKING} from '../actions/ranking';
 
 const initialState = {
-    ranking: {
-        isFetching: false,
-        items: []
-    }
+    isFetching: false,
+    items: [],
+    lastUpdate: null
 };
 
 function ranking(state = initialState, action) {

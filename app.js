@@ -9,6 +9,12 @@ const express = require('express');
 const app = express();
 const router = require('./app/routes/main')
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 app.use(express.static('public'));
 
 app.use('/', router);
@@ -63,7 +69,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     // This will send the message 'this is a test message' to the channel identified by id 'C0CHZA86Q'
-    rtm.sendMessage('gabriel va reussir son annee', 'C2J8W4RK4', function messageSent() {
-        // optionally, you can supply a callback to execute once the message has been sent
-    });
+    // rtm.sendMessage('gabriel va reussir son annee', 'C2J8W4RK4', function messageSent() {
+    //     // optionally, you can supply a callback to execute once the message has been sent
+    // });
 });
