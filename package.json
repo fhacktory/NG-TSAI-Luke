@@ -23,7 +23,9 @@
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
     "request": "^2.75.0",
-    "request-promise-native": "^1.0.3"
+    "request-promise-native": "^1.0.3",
+    "videoshow": "^0.1.9",
+    "gm": "^1.23.0"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

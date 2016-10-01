@@ -1,43 +1,16 @@
 const config = require('./config');
 const mongoose = require('mongoose');
-mongoose.connect('localhost', 'suzette');
+var fs = require('fs')
+    , gm = require('gm').subClass({imageMagick: true});
+var request = require('request');
 
-/*--------------------------------------------------*\
-    # Express
-\*--------------------------------------------------*/
-const express = require('express');
-const app = express();
-const router = require('./app/routes/main')
+var videoshow = require('videoshow');
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
 
-app.use(express.static('public'));
-
-app.use('/', router);
-
-app.listen(3000, function () {
-    console.log('App listening on port 3000!');
-});
-
-/*--------------------------------------------------*\
-    # END Express
-\*--------------------------------------------------*/
 
 //getUserById -> userid, rtm
 const listen = require('./app/services/listen-service');
 const userService = require('./app/services/user-service');
-const userManager = require('./app/managers/user-manager');
-userManager.registerUsersFromWs();
-
-const pwonedHelper = require('./pwoned.helper');
-
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
-pwonedHelper.addPoint('gabriel', 100);
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
 
 const RtmClient = require('@slack/client').RtmClient;
 
@@ -61,10 +34,57 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	listen.listenToSuze(message);
-	listen.listenRandom(message);
-	listen.listenAlone(message);
-    listen.listenResult(message);
+    var user = userService.getUserById(message.user);
+    console.log(user.profile);
+    var url = user.profile.image_512;
+    gm(request(url))
+        .motionBlur(90,60)
+        .resize(512,512)
+    .write("./"+user.name+".jpg", function (err) {
+        gm("./"+user.name+".jpg")
+            .composite('./wastedBig.png')
+            .geometry('-240%-100%')
+            .write("./"+user.name+"Wasted.jpg", function (err) {
+                gm(request(url))
+                    .morph("./"+user.name+"Wasted.jpg", "./"+user.name+".jpg",function (err) {
+                        // gm("./"+user.name+".jpg")
+                        //     .composite('./wastedBig.png')
+                        //     .geometry('-240%-100%')
+                        //     .write("./"+user.name+".jpg", function (err) {
+                        //
+                        //     })
+                        var images = [
+                            "./"+user.name+"-0.jpg",
+                            "./"+user.name+"-1.jpg",
+                            "./"+user.name+"-2.jpg"
+                        ];
+
+                        var options = {
+                            transition: true
+                        }
+
+                        videoshow(images, options)
+                            .audio('./wasted.mp3')
+                            .save('video.mp4')
+                            .on('start', function (command) {
+                                console.log('ffmpeg process started:', command)
+                            })
+                            .on('error', function (err) {
+                                console.error('Error:', err)
+                            })
+                            .on('end', function (output) {
+                                console.log('Video created in:', output)
+                            })
+
+                    });
+            })
+    });
+
+
+    var result = listen.listenToSuze(message);
+	if (null !== result) {
+		//rtm.sendMessage(userService.getUserById(result.user).name+" s'est fait pwed par "+userService.getUserById(result.pwner).name, 'C2J8W4RK4');
+	}
 });
 
 // you need to wait for the client to fully connect before you can send messages
@@ -74,3 +94,9 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     //     // optionally, you can supply a callback to execute once the message has been sent
     // });
 });
+
+userService.getUserList()
+    .then(res => console.log(res))
+    .catch(e => console.error(e));
+
+rtm.start();
