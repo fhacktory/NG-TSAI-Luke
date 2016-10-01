@@ -7,8 +7,11 @@ mongoose.connect('localhost', 'suzette');
 \*--------------------------------------------------*/
 const express = require('express');
 const app = express();
+const router = require('./app/routes/main')
 
 app.use(express.static('public'));
+
+app.use('/', router);
 
 app.listen(3000, function () {
     console.log('App listening on port 3000!');
@@ -64,4 +67,3 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
         // optionally, you can supply a callback to execute once the message has been sent
     });
 });
-

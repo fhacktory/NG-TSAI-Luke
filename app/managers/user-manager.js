@@ -6,6 +6,7 @@ module.exports = {
         userManager.getUserList()
             .then(function (members) {
                 members.forEach(member => {
+                  console.log(member)
                     if (member.profile.email) {
                         let user = {
                             username: member.name,
