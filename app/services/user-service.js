@@ -9,5 +9,9 @@ module.exports = {
                 res = JSON.parse(res);
                 return res.members;
             });
+    },
+    getUserById: function(userid) {
+        const user = rtm.dataStore.getUserById(userid);
+        return user;
     }
 };

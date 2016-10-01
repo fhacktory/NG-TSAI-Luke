@@ -2,7 +2,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 
 //getUserById -> userid, rtm
-const userService = require("./user-service.js");
+const userService = require('./app/services/user-service');
 const listen = require('./app/listen');
 
 const RtmClient = require('@slack/client').RtmClient;
@@ -41,7 +41,6 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     });
 });
 
-const userService = require('./app/services/user-service');
 userService.getUserList()
     .then(res => console.log(res))
     .catch(e => console.error(e));
