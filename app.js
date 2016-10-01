@@ -11,8 +11,10 @@ const RtmClient = require('@slack/client').RtmClient;
 const MemoryDataStore = require('@slack/client').MemoryDataStore;
 
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
+const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
-const rtm = new RtmClient(config.key, {
+rtm = new RtmClient(config.key, {
     // Sets the level of logging we require
     logLevel: config.logLevel,
     // Initialise a data store for our client, this will load additional helper functions for the storing and retrieval of data
@@ -24,14 +26,10 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
     console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
 });
 
-const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
-const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
-
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	//listen.listeToSuze(message);
-	var result = listen.listeToSuze(message);
+	var result = listen.listenToSuze(message);
 	if (null !== result) {
-		rtm.sendMessage(userService.getUserById(result.user, rtm).name+" s'est fait pwed par "+userService.getUserById(result.pwner, rtm).name, 'C2J8W4RK4');
+		rtm.sendMessage(userService.getUserById(result.user).name+" s'est fait pwed par "+userService.getUserById(result.pwner).name, 'C2J8W4RK4');
 	}
 });
 

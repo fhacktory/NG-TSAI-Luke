@@ -1,5 +1,5 @@
 module.exports = {
-    getUserById: function(userid, rtm) {
+    getUserById: function(userid) {
         var user = rtm.dataStore.getUserById(userid);
         return user;
     }
