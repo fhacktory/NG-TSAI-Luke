@@ -7,8 +7,17 @@ mongoose.connect('localhost', 'suzette');
 \*--------------------------------------------------*/
 const express = require('express');
 const app = express();
+const router = require('./app/routes/main')
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 app.use(express.static('public'));
+
+app.use('/', router);
 
 app.listen(3000, function () {
     console.log('App listening on port 3000!');
@@ -21,7 +30,6 @@ app.listen(3000, function () {
 //getUserById -> userid, rtm
 const listen = require('./app/services/listen-service');
 const userService = require('./app/services/user-service');
-const pointService = require('./app/services/point-service');
 const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
 
@@ -49,17 +57,16 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-    pointService.getPointToTransfert('gabriel', 'luc');
 	listen.listenToSuze(message);
 	listen.listenRandom(message);
 	listen.listenAlone(message);
+    listen.listenResult(message);
 });
 
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     // This will send the message 'this is a test message' to the channel identified by id 'C0CHZA86Q'
-    rtm.sendMessage('gabriel va reussir son annee', 'C2J8W4RK4', function messageSent() {
-        // optionally, you can supply a callback to execute once the message has been sent
-    });
+    // rtm.sendMessage('gabriel va reussir son annee', 'C2J8W4RK4', function messageSent() {
+    //     // optionally, you can supply a callback to execute once the message has been sent
+    // });
 });
-

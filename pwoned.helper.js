@@ -15,7 +15,18 @@ const addPoint = (username, points) => {
     const conditions = {username: username}
     const update = {$inc: {points: points}}
     const options = { multi: false };
-    return Pwoned.update(conditions, update, options)
+    Pwoned.update(conditions, update, options, (err, value) => {})
+    const data = 'Player: ' + username + ' has own someone the : ' + Date.now()
+    Pwoned.update({username: username},
+		{'$push': {
+			'log': data,
+		}},
+		function(err,model) {
+			if(err){
+				console.log(err);
+			}
+  			console.log(model);
+		});
 }
 
 const getUser = (username) => {

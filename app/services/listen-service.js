@@ -1,4 +1,8 @@
 const userService = require('./user-service');
+const Pwoned = require('../models/pwoned.model.js');
+const pointService = require('./point-service');
+
+var player = require('play-sound')(opts = {})
 var last = [];
 
 module.exports = {
@@ -10,7 +14,13 @@ module.exports = {
 			if (pwner !== null && pwner[0] !== null) {
 				// pwner[0] : Login avec <@ ... >
 				// pwner[1] : Id du user
+
+				player.play('assets/wasted.mp3', function(err){
+				    console.log(err);
+				}); // $ mplayer foo.mp3  
+
 				rtm.sendMessage(userService.getUserById(message.user).name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
+				pointService.getPointToTransfert(userService.getUserById(message.user).name, userService.getUserById(pwner[1]).name);
 				return true;
 			}
 		}
@@ -40,7 +50,22 @@ module.exports = {
 		if (nbMessage >= 8 && lastMessage === 3) {
 			rtm.sendMessage("Tu parles seul <@"+message.user+"> !", message.channel);
 		}
+	},
+	listenResult: function(message) {
+		if (message.text === 'result') {
+			var ranking = '';
+			Pwoned
+			    .find()
+			    .exec((err, result) =>{
+			        if (err){
+			            res.send(err)
+			        } else {
+			        	result.forEach(function(element) {
+			        		ranking += "<@"+element['idSlack']+"> "+element['points']+"\n";
+			        	});
+			            rtm.sendMessage(ranking, message.channel);
+			        }
+			    });
+		}
 	}
-
-
 }
