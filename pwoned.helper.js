@@ -15,8 +15,7 @@ const addPoint = (username, points) => {
     const conditions = {username: username}
     const update = {$inc: {points: points}}
     const options = { multi: false };
-    console.log(conditions, update, options)
-    Pwoned.update(conditions, update, options, (err, value) => {})
+    return Pwoned.update(conditions, update, options)
 }
 
 const getUser = (username) => {

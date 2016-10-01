@@ -21,14 +21,11 @@ app.listen(3000, function () {
 //getUserById -> userid, rtm
 const listen = require('./app/services/listen-service');
 const userService = require('./app/services/user-service');
+const pointService = require('./app/services/point-service');
 const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
 
 const pwonedHelper = require('./pwoned.helper');
-
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
-pwonedHelper.addPoint('gabriel', 100);
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
 
 const RtmClient = require('@slack/client').RtmClient;
 
@@ -52,6 +49,7 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
+    pointService.getPointToTransfert('gabriel', 'luc');
 	listen.listenToSuze(message);
 	listen.listenRandom(message);
 	listen.listenAlone(message);
