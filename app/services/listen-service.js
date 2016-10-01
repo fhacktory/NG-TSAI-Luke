@@ -49,7 +49,6 @@ module.exports = {
 		}
 	},
 	listenResult: function(message) {
-		console.log("test", message);
 		if (message.text === 'result') {
 			var ranking = '';
 			Pwoned
