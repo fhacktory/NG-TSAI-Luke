@@ -1,6 +1,6 @@
 const config = require('./config');
 //getUserById -> userid, rtm
-var userService = require("./user-service.js");
+var falseUserService = require("./user-service.js");
 
 var RtmClient = require('@slack/client').RtmClient;
 
@@ -31,5 +31,10 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 rtm.on(RTM_EVENTS.CHANNEL_CREATED, function (message) {
     // Listens to all `channel_created` events from the team
 });
+
+const userService = require('./app/services/user-service');
+userService.getUserList()
+    .then(res => console.log(res))
+    .catch(e => console.error(e));
 
 rtm.start();
