@@ -1,5 +1,7 @@
 const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
+const pointService = require('./point-service');
+
 var player = require('play-sound')(opts = {})
 var last = [];
 
@@ -18,6 +20,7 @@ module.exports = {
 				}); // $ mplayer foo.mp3  
 
 				rtm.sendMessage(userService.getUserById(message.user).name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
+				pointService.getPointToTransfert(userService.getUserById(message.user).name, userService.getUserById(pwner[1]).name);
 				return true;
 			}
 		}
@@ -60,7 +63,8 @@ module.exports = {
 			        	result.forEach(function(element) {
 			        		ranking += "<@"+element['idSlack']+"> "+element['points']+"\n";
 			        	});
-			            rtm.sendMessage(ranking, message.channel);
+			        	var dm = userService.getDMById(message.user);
+			            rtm.sendMessage(ranking, dm.id);
 			        }
 			    });
 		}
