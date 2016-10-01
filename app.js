@@ -2,6 +2,21 @@ const config = require('./config');
 const mongoose = require('mongoose');
 mongoose.connect('localhost', 'suzette');
 
+/*--------------------------------------------------*\
+    # Express
+\*--------------------------------------------------*/
+const express = require('express');
+const app = express();
+
+app.use(express.static('public'));
+
+app.listen(3000, function () {
+    console.log('App listening on port 3000!');
+});
+
+/*--------------------------------------------------*\
+    # END Express
+\*--------------------------------------------------*/
 
 //getUserById -> userid, rtm
 const listen = require('./app/services/listen-service');
@@ -10,6 +25,9 @@ const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
 
 const pwonedHelper = require('./pwoned.helper');
+
+pwonedHelper.getUser('gabriel').then(user => console.log(user));
+pwonedHelper.addPoint('gabriel', 100);
 pwonedHelper.getUser('gabriel').then(user => console.log(user));
 
 const RtmClient = require('@slack/client').RtmClient;
