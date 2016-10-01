@@ -40,3 +40,10 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
         // optionally, you can supply a callback to execute once the message has been sent
     });
 });
+
+const userService = require('./app/services/user-service');
+userService.getUserList()
+    .then(res => console.log(res))
+    .catch(e => console.error(e));
+
+rtm.start();
