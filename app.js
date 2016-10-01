@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 //getUserById -> userid, rtm
 const userService = require("./user-service.js");
-const listen = require('./app/listen');
+const listen = require('./app/listen-service');
 
 const RtmClient = require('@slack/client').RtmClient;
 
