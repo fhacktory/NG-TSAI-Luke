@@ -28,7 +28,11 @@ const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const RTM_CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS.RTM;
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
-	listen.listeToSuze(message);
+	//listen.listeToSuze(message);
+	var result = listen.listeToSuze(message);
+	if (null !== result) {
+		rtm.sendMessage(userService.getUserById(result.user, rtm).name+" s'est fait pwed par "+userService.getUserById(result.pwner, rtm).name, 'C2J8W4RK4');
+	}
 });
 
 // you need to wait for the client to fully connect before you can send messages
