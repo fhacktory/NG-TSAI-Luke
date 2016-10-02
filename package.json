@@ -13,8 +13,11 @@
     "@slack/client": "^3.6.0",
     "ar-drone": "^0.3.3",
     "express": "^4.14.0",
+    "fluent-ffmpeg": "^2.1.0",
+    "gm": "^1.23.0",
     "material-ui": "^0.15.4",
     "mongoose": "^4.4.5",
+    "node-slack-upload": "^1.1.1",
     "play-sound": "0.0.9",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
@@ -24,7 +27,8 @@
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
     "request": "^2.75.0",
-    "request-promise-native": "^1.0.3"
+    "request-promise-native": "^1.0.3",
+    "videoshow": "^0.1.9"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

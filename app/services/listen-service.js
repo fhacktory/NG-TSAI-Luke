@@ -4,11 +4,15 @@ const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
 const pwonedHelper = require('./pwoned.helper.js');
+const wastedService = require('./wasted-service');
+const config = require('../../config');
+const fs = require('fs');
+const request = require('request');
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
 
-const player = require('play-sound')(opts = {})
+const player = require('play-sound')({});
 let last = [];
 
 module.exports = {
@@ -23,14 +27,34 @@ module.exports = {
                 makeItDanceBaby();
 
 				let user = userService.getUserById(message.user);
-    			let noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
+				// partie génération du gif selon l'avatar 512
+				var url = user.profile.image_512;
+				// verifie si on a pas déjà cree la video
+				try {
+					fs.accessSync(config.paf+'/assets/' + user.name + '.mp4');
+					request.post({
+						url: 'https://slack.com/api/files.upload',
+						formData: {
+							token: config.key,
+							filename: "video.mp4",
+							filetype: "auto",
+							channels: "C2J8W4RK4",
+							file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
+						}
+					}, function (err, response) {
+					});
+				} catch (e) {
 
-	    			let diff = (Date.now() - result.log[result.log.length - 1].date);
+					wastedService.generateVideo(url, user);
+				}
 
-	    			if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
-						player.play('assets/wasted.mp3', function(err){
+    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
+					var diff = result.log.length ?(Date.now() - result.log[result.log.length - 1].date) : 300001;
+
+					if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
+						/*player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
-						}); // $ mplayer foo.mp3
+						}); // $ mplayer foo.mp3*/
 
 						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
 						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
@@ -56,7 +80,7 @@ module.exports = {
         let nbMessage = 0;
         let lastMessage = 0;
 
-        for (i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             if (last[i] === message.user) {
                 if (i < 3) {
                     lastMessage++;

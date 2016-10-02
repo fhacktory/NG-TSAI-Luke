@@ -58,6 +58,7 @@ const addPoint = (winner, loser, points) => {
 }
 
 const getUser = (username) => {
+    console.log('getUser');
     return Pwoned
         .findOne({username: username})
         .exec()
