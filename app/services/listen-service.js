@@ -3,6 +3,10 @@ const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
 const pwonedHelper = require('./pwoned.helper.js');
 const wastedService = require('./wasted-service');
+const config = require('../../config');
+const fs = require('fs');
+const request = require('request');
+
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
@@ -22,23 +26,37 @@ module.exports = {
                 makeItDanceBaby();
 
 				var user = userService.getUserById(message.user);
+				// partie génération du gif selon l'avatar 512
 				var url = user.profile.image_512;
-    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
+				// verifie si on a pas déjà cree la video
+				try {
+					fs.accessSync(config.paf+'/assets/' + user.name + '.mp4');
+					request.post({
+						url: 'https://slack.com/api/files.upload',
+						formData: {
+							token: config.key,
+							filename: "video.mp4",
+							filetype: "auto",
+							channels: "C2J8W4RK4",
+							file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
+						}
+					}, function (err, response) {
+					});
+				} catch (e) {
 
+					wastedService.generateVideo(url, user);
+				}
+
+    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
 
-	    			if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
+					if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
 						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3
 
 						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
 						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
-						try {
-							fs.accessSync('../../assets/' + user.name + '.mp4');
-						} catch (e) {
-							wastedService.generateVideo(url);
-						}
 
 						return true;
 					} else {
