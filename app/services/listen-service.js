@@ -45,19 +45,17 @@ module.exports = {
 								url: 'https://slack.com/api/files.upload',
 								formData: {
 									token: config.key,
-									filename: "video.mp4",
+									filename: user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name+".mp4",
 									filetype: "auto",
-									channels: "C2J8W4RK4",
+									channels: message.channel,
 									file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
 								}
 							}, function (err, response) {
 							});
 						} catch (e) {
-
 							wastedService.generateVideo(url, user);
 						}
 
-						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
 						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
 
 						return true;
