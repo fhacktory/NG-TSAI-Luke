@@ -28,25 +28,6 @@ module.exports = {
 
 				let user = userService.getUserById(message.user);
 				// partie génération du gif selon l'avatar 512
-				var url = user.profile.image_512;
-				// verifie si on a pas déjà cree la video
-				try {
-					fs.accessSync(config.paf+'/assets/' + user.name + '.mp4');
-					request.post({
-						url: 'https://slack.com/api/files.upload',
-						formData: {
-							token: config.key,
-							filename: "video.mp4",
-							filetype: "auto",
-							channels: "C2J8W4RK4",
-							file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
-						}
-					}, function (err, response) {
-					});
-				} catch (e) {
-
-					wastedService.generateVideo(url, user);
-				}
 
     			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 					var diff = result.log.length ?(Date.now() - result.log[result.log.length - 1].date) : 300001;
@@ -55,6 +36,26 @@ module.exports = {
 						/*player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3*/
+
+						var url = user.profile.image_512;
+						// verifie si on a pas déjà cree la video
+						try {
+							fs.accessSync(config.paf+'/assets/' + user.name + '.mp4');
+							request.post({
+								url: 'https://slack.com/api/files.upload',
+								formData: {
+									token: config.key,
+									filename: "video.mp4",
+									filetype: "auto",
+									channels: "C2J8W4RK4",
+									file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
+								}
+							}, function (err, response) {
+							});
+						} catch (e) {
+
+							wastedService.generateVideo(url, user);
+						}
 
 						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
 						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
