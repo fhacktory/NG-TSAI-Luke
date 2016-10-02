@@ -13,7 +13,7 @@ const request = require('request');
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
 
-const player = require('play-sound')(opts = {})
+const player = require('play-sound')({});
 let last = [];
 
 module.exports = {
@@ -81,7 +81,7 @@ module.exports = {
         let nbMessage = 0;
         let lastMessage = 0;
 
-        for (i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             if (last[i] === message.user) {
                 if (i < 3) {
                     lastMessage++;
