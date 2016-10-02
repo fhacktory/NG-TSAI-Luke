@@ -67,7 +67,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
                         var videoOptions = {
                             fps: 25,
                             loop: 1, // seconds
-                            transition: true,
+                            transition: false,
                             transitionDuration: 0.5, // seconds
                             format: 'mp4'
                         }
@@ -78,7 +78,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
                             path: "./"+user.name+"-1.jpg"
                         },{
                             path: "./"+user.name+"-2.jpg",
-                            loop: 10 // long caption
+                            loop: 3 // long caption
                         }
                         ], videoOptions)
                             .save(user.name+'.mp4')
