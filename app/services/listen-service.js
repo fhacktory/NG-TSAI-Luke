@@ -9,7 +9,6 @@ const config = require('../../config');
 const fs = require('fs');
 const request = require('request');
 
-
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
 
