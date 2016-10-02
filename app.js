@@ -5,6 +5,10 @@ var fs = require('fs')
 var request = require('request');
 
 var videoshow = require('videoshow');
+var Slack = require('node-slack-upload');
+var slack = new Slack(config.key);
+var WebClient = require('@slack/client').WebClient;
+const path = require('path');
 
 
 
@@ -27,15 +31,17 @@ rtm = new RtmClient(config.key, {
     // Initialise a data store for our client, this will load additional helper functions for the storing and retrieval of data
     dataStore: new MemoryDataStore()
 });
+var web = new WebClient(config.key);
+
 rtm.start();
 
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-    console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+    //console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function (message) {
     var user = userService.getUserById(message.user);
-    console.log(user.profile);
+    //console.log(user.profile);
     var url = user.profile.image_512;
     gm(request(url))
         .motionBlur(90,60)
@@ -58,23 +64,45 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
                             "./"+user.name+"-1.jpg",
                             "./"+user.name+"-2.jpg"
                         ];
-
-                        var options = {
-                            transition: true
+                        var videoOptions = {
+                            fps: 25,
+                            loop: 1, // seconds
+                            transition: true,
+                            transitionDuration: 0.5, // seconds
+                            format: 'mp4'
                         }
 
-                        videoshow(images, options)
-                            .audio('./wasted.mp3')
-                            .save('video.mp4')
-                            .on('start', function (command) {
-                                console.log('ffmpeg process started:', command)
-                            })
-                            .on('error', function (err) {
-                                console.error('Error:', err)
-                            })
-                            .on('end', function (output) {
-                                console.log('Video created in:', output)
-                            })
+                        videoshow([{
+                            path: "./"+user.name+"-0.jpg"
+                        }, {
+                            path: "./"+user.name+"-1.jpg"
+                        },{
+                            path: "./"+user.name+"-2.jpg",
+                            loop: 10 // long caption
+                        }
+                        ], videoOptions)
+                            .save(user.name+'.mp4')
+                            .on('error', function (err, stdout, stderr) {
+                                console.log(stdout);
+                                console.log(stderr);
+                                })
+                            .on('end', function () {
+                                request.post({
+                                    url: 'https://slack.com/api/files.upload',
+                                    formData: {
+                                        token: config.key,
+                                        filename: "video.mp4",
+                                        filetype: "auto",
+                                        channels: "C2J8W4RK4",
+                                        file: fs.createReadStream(user.name+'.mp4')
+                                    }
+                                }, function (err, response) {
+                                    console.log('err',err);
+                                    console.log('response',response);
+                                    console.log(JSON.parse(response.body));
+                                });
+                            });
+
 
                     });
             })
@@ -95,8 +123,8 @@ rtm.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, function () {
     // });
 });
 
-userService.getUserList()
-    .then(res => console.log(res))
-    .catch(e => console.error(e));
+//userService.getUserList()
+//    .then(res => console.log(res))
+//    .catch(e => console.error(e));
 
 rtm.start();
