@@ -25,7 +25,7 @@ module.exports = {
 
 	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
 
-	    			if (diff > 300000) {
+	    			if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
 						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3
