@@ -32,7 +32,7 @@ module.exports = {
     			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 					var diff = result.log.length ?(Date.now() - result.log[result.log.length - 1].date) : 300001;
 
-					if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
+					if (diff > 300000 || message.text.indexOf("suzeforce") === 0 || result.log[result.log.length - 1].point > 0) {
 						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3
