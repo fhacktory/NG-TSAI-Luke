@@ -1,7 +1,6 @@
 const pwonedHelper = require('pwoned.helper.js');
 
 
-
 module.exports = {
     getPointToTransfert: function (noob, ninja) {
         const changePoint = (result, err) => {
