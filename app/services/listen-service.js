@@ -1,7 +1,7 @@
 const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
-const pwonedHelper = require('../../pwoned.helper');
+const pwonedHelper = require('./pwoned.helper.js');
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();

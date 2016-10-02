@@ -1,9 +1,10 @@
-import {RECEIVE_RANKING, REQUEST_RANKING} from '../actions/ranking';
+import {RECEIVE_RANKING, REQUEST_RANKING, SELECT_RANK} from '../actions/ranking';
 
 const initialState = {
     isFetching: false,
     items: [],
-    lastUpdate: null
+    lastUpdate: null,
+    selectedRankIndex: 0
 };
 
 function ranking(state = initialState, action) {
@@ -17,6 +18,10 @@ function ranking(state = initialState, action) {
                 isFetching: false,
                 items: action.rankings,
                 lastUpdate: action.receivedAt
+            });
+        case SELECT_RANK:
+            return Object.assign({}, state, {
+                selectedRankIndex: action.index
             });
         default:
             return state;
