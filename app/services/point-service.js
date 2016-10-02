@@ -1,4 +1,4 @@
-const pwonedHelper = require('pwoned.helper.js');
+const pwonedHelper = require('./pwoned.helper.js');
 
 
 
