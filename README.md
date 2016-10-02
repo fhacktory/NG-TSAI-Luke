@@ -16,14 +16,14 @@
 3. drone parrot AR 2.0 ofc
 2. 2 wifi connection: 1 for internet and 1 for the drone
 
-### How to install
-Damn EZ:
+### How to install, Damn EZ:
+
 1. npm install
 2. sudo apt-get install mplayer
 3. create a file named : config.js with your slack token and key
 
-### How to run it?
-still damn EZ:
+### How to run it? still damn EZ:
+
 1. npm start
 
 ### Slack command

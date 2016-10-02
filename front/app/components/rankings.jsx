@@ -1,23 +1,18 @@
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
-import {List, ListItem} from 'material-ui/List';
-import ActionInfo from 'material-ui/svg-icons/action/info';
 
-const style = {
-    maxWidth: 300
-};
+import RankingList from './rankingList.jsx';
+import Details from './details.jsx';
 
-const Rankings = ({rankings}) => (
-    <List style={style}>
-        {rankings.map((rank, i) =>
-            <ListItem key={rank._id}
-                      leftAvatar={<Avatar src={rank.img_24}/>}
-                      primaryText={`N°: ${i + 1} - ${rank.username}`}
-                      secondaryText={rank.points + ' points'}
-                      rightIcon={<ActionInfo />}
-            />
-        )}
-    </List>
+const Rankings = ({rankings, onRankClick, selectedRank}) => (
+    <div>
+        <RankingList
+            rankings={rankings}
+            onRankClick={onRankClick}
+        />
+        <Details
+            {...selectedRank}
+        />
+    </div>
 );
 
 export default Rankings;

@@ -1,5 +1,6 @@
 export const REQUEST_RANKING = 'REQUEST_RANKING';
 export const RECEIVE_RANKING = 'RECEIVE_RANKING';
+export const SELECT_RANK = 'SELECT_RANK';
 
 export function requestRanking() {
     return {
@@ -13,6 +14,13 @@ export function receiveRanking(data) {
         rankings: data.map(rank => rank)
             .sort((rank1, rank2) => rank2.points - rank1.points),
         receivedAt: Date.now()
+    }
+}
+
+export function selectRank(index) {
+    return {
+        type: SELECT_RANK,
+        index
     }
 }
 
