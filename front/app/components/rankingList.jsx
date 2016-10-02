@@ -4,7 +4,8 @@ import {List} from 'material-ui/List';
 import Rank from './rank.jsx';
 
 const style = {
-    maxWidth: 300
+    maxWidth: 300,
+    display: 'inline-block'
 };
 
 const RankingList = ({rankings, onRankClick}) => (

@@ -5,7 +5,8 @@ import {selectRank} from '../actions/ranking';
 
 const mapStateToProps = (state) => {
     return {
-        rankings: state.items
+        rankings: state.items,
+        selectedRank: state.items[state.selectedRankIndex]
     }
 };
 

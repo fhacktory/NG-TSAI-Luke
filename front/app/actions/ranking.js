@@ -17,10 +17,10 @@ export function receiveRanking(data) {
     }
 }
 
-export function selectRank(rank) {
+export function selectRank(index) {
     return {
         type: SELECT_RANK,
-        rank
+        index
     }
 }
 
