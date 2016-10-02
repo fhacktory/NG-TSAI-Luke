@@ -1,5 +1,6 @@
-const pwonedHelper = require('pwoned.helper.js');
+'use strict'
 
+const pwonedHelper = require('./pwoned.helper.js');
 
 module.exports = {
     getPointToTransfert: function (noob, ninja) {

@@ -1,31 +1,57 @@
+'use strict'
+
 const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
 const pwonedHelper = require('./pwoned.helper.js');
+const wastedService = require('./wasted-service');
+const config = require('../../config');
+const fs = require('fs');
+const request = require('request');
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
 
-var player = require('play-sound')(opts = {})
-var last = [];
+const player = require('play-sound')({});
+let last = [];
 
 module.exports = {
     listenToSuze: function (message) {
-        var regex = new RegExp('<@(\\w*)>');
+        const regex = new RegExp('<@(\\w*)>');
 
         if (message.text && message.text.indexOf("suze") === 0) {
-            var pwner = regex.exec(message.text);
+            let pwner = regex.exec(message.text);
             if (pwner !== null && pwner[0] !== null) {
                 // pwner[0] : Login avec <@ ... >
                 // pwner[1] : Id du user
                 makeItDanceBaby();
 
-				var user = userService.getUserById(message.user);
-    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
+				let user = userService.getUserById(message.user);
+				// partie génération du gif selon l'avatar 512
+				var url = user.profile.image_512;
+				// verifie si on a pas déjà cree la video
+				try {
+					fs.accessSync(config.paf+'/assets/' + user.name + '.mp4');
+					request.post({
+						url: 'https://slack.com/api/files.upload',
+						formData: {
+							token: config.key,
+							filename: "video.mp4",
+							filetype: "auto",
+							channels: "C2J8W4RK4",
+							file: fs.createReadStream(config.paf+'/assets/' + user.name + '.mp4')
+						}
+					}, function (err, response) {
+					});
+				} catch (e) {
 
+					wastedService.generateVideo(url, user);
+				}
+
+    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
 
-	    			if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
+					if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
 						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3
@@ -44,17 +70,17 @@ module.exports = {
 		return false;
 	},
 	listenRandom: function(message) {
-		var result = Math.floor((Math.random() * 10) + 1);
+		let result = Math.floor((Math.random() * 10) + 1);
 
         if (result === 10) {
             rtm.sendMessage("Ta gueule <@" + message.user + "> !", message.channel);
         }
     },
     listenAlone: function (message) {
-        var nbMessage = 0;
-        var lastMessage = 0;
+        let nbMessage = 0;
+        let lastMessage = 0;
 
-        for (i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             if (last[i] === message.user) {
                 if (i < 3) {
                     lastMessage++;
@@ -70,7 +96,7 @@ module.exports = {
 	},
 	listenResult: function(message) {
 		if (message.text === 'result') {
-			var ranking = '';
+			let ranking = '';
 			Pwoned
 			    .find()
 			    .exec((err, result) =>{
@@ -80,7 +106,7 @@ module.exports = {
 			        	result.forEach(function(element) {
 			        		ranking += "<@"+element['idSlack']+"> "+element['points']+"\n";
 			        	});
-			        	var dm = userService.getDMById(message.user);
+			        	let dm = userService.getDMById(message.user);
 			            rtm.sendMessage(ranking, dm.id);
 			        }
 			    });

@@ -4,7 +4,7 @@ const path = process.cwd();
 const Pwoned = require(path + '/app/models/pwoned.model.js')
 
 const create = (username, email) => {
-    var user = {
+    let user = {
         username: username,
         email: email
     };
@@ -58,13 +58,22 @@ const addPoint = (winner, loser, points) => {
 }
 
 const getUser = (username) => {
+    console.log('getUser');
     return Pwoned
         .findOne({username: username})
         .exec()
 }
 
+const playerToKill = () => {
+  return Pwoned
+      .findOne()
+      .sort({points: 'descending'})
+      .exec()
+}
+
 module.exports = {
     create: create,
     addPoint: addPoint,
-    getUser: getUser
+    getUser: getUser,
+    playerToKill: playerToKill
 }
