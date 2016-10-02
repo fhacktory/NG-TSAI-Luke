@@ -2,6 +2,7 @@ const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
 const pwonedHelper = require('./pwoned.helper.js');
+const wastedService = require('./wasted-service');
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
@@ -21,6 +22,7 @@ module.exports = {
                 makeItDanceBaby();
 
 				var user = userService.getUserById(message.user);
+				var url = user.profile.image_512;
     			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 
 	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
@@ -32,6 +34,11 @@ module.exports = {
 
 						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
 						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
+						try {
+							fs.accessSync('../../assets/' + user.name + '.mp4');
+						} catch (e) {
+							wastedService.generateVideo(url);
+						}
 
 						return true;
 					} else {
