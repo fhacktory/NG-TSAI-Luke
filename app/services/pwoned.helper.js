@@ -63,8 +63,16 @@ const getUser = (username) => {
         .exec()
 }
 
+const playerToKill = () => {
+  return Pwoned
+      .findOne()
+      .sort({points: 'descending'})
+      .exec()
+}
+
 module.exports = {
     create: create,
     addPoint: addPoint,
-    getUser: getUser
+    getUser: getUser,
+    playerToKill: playerToKill
 }
