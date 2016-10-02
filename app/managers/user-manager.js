@@ -13,9 +13,10 @@ module.exports = {
                             idSlack: member.id,
                             firstName: member.profile.first_name,
                             lastName: member.profile.last_name,
-                            points: 100
+                            points: 100,
+                            img_24: member.profile.image_24,
                         };
-                        Pwoned.create(user, function(err, user) {
+                        Pwoned.create(user, function (err, user) {
                             //TODO
                         });
                     }

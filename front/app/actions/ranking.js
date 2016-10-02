@@ -10,7 +10,8 @@ export function requestRanking() {
 export function receiveRanking(data) {
     return {
         type: RECEIVE_RANKING,
-        rankings: data.map(rank => rank),
+        rankings: data.map(rank => rank)
+            .sort((rank1, rank2) => rank2.points - rank1.points),
         receivedAt: Date.now()
     }
 }

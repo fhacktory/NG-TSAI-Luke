@@ -35,10 +35,6 @@ userManager.registerUsersFromWs();
 
 const pwonedHelper = require('./pwoned.helper');
 
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
-pwonedHelper.addPoint('gabriel', 100);
-pwonedHelper.getUser('gabriel').then(user => console.log(user));
-
 const RtmClient = require('@slack/client').RtmClient;
 
 // The memory data store is a collection of useful functions we can include in our RtmClient
@@ -64,6 +60,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function (message) {
 	listen.listenToSuze(message);
 	listen.listenRandom(message);
 	listen.listenAlone(message);
+    listen.listenResult(message);
 });
 
 // you need to wait for the client to fully connect before you can send messages
