@@ -1,6 +1,7 @@
 const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
+const pwonedHelper = require('../../pwoned.helper');
 
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
@@ -19,19 +20,31 @@ module.exports = {
                 // pwner[1] : Id du user
                 makeItDanceBaby();
 
-                player.play('assets/wasted.mp3', function (err) {
-                    console.log(err);
-                }); // $ mplayer foo.mp3
+				var user = userService.getUserById(message.user);
+    			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 
-                rtm.sendMessage(userService.getUserById(message.user).name + " s'est fait pwed par " + userService.getUserById(pwner[1]).name, message.channel);
-                pointService.getPointToTransfert(userService.getUserById(message.user).name, userService.getUserById(pwner[1]).name);
-                return true;
-            }
-        }
-        return false;
-    },
-    listenRandom: function (message) {
-        var result = Math.floor((Math.random() * 10) + 1);
+	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
+
+	    			if (diff > 300000) {
+						player.play('assets/wasted.mp3', function(err){
+						    console.log(err);
+						}); // $ mplayer foo.mp3
+
+						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
+						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
+
+						return true;
+					} else {
+						rtm.sendMessage("Vous devez patientez "+Math.ceil((300000 - diff) / 1000)+" secondes avant de pwed "+user.name, message.channel);
+						return false;
+					}
+    			});
+			}
+		}
+		return false;
+	},
+	listenRandom: function(message) {
+		var result = Math.floor((Math.random() * 10) + 1);
 
         if (result === 10) {
             rtm.sendMessage("Ta gueule <@" + message.user + "> !", message.channel);
