@@ -33,9 +33,9 @@ module.exports = {
 					var diff = result.log.length ?(Date.now() - result.log[result.log.length - 1].date) : 300001;
 
 					if (diff > 300000 || message.text.indexOf("suzeforce") === 0) {
-						/*player.play('assets/wasted.mp3', function(err){
+						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
-						}); // $ mplayer foo.mp3*/
+						}); // $ mplayer foo.mp3
 
 						var url = user.profile.image_512;
 						// verifie si on a pas déjà cree la video
