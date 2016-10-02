@@ -9,7 +9,19 @@ const router = express.Router();
 router.get('/all', function (req, res) {
   Pwoned
     .find()
-    .exec((err, result) =>{
+      .exec((err, result) =>{
+        if (err){
+            res.send(err)
+        } else {
+            res.send(result)
+        }
+    })
+});
+
+router.get('/reset', function (req, res) {
+  Pwoned
+      .remove()
+      .exec((err, result) =>{
         if (err){
             res.send(err)
         } else {

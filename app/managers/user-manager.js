@@ -6,7 +6,6 @@ module.exports = {
         userManager.getUserList()
             .then(function (members) {
                 members.forEach(member => {
-                    log.push('Create date: '+Date.now)
                     if (member.profile.email) {
                         let user = {
                             username: member.name,
@@ -15,9 +14,9 @@ module.exports = {
                             firstName: member.profile.first_name,
                             lastName: member.profile.last_name,
                             points: 100,
-                            log : log
+                            img_24: member.profile.image_24,
                         };
-                        Pwoned.create(user, function(err, user) {
+                        Pwoned.create(user, function (err, user) {
                             //TODO
                         });
                     }

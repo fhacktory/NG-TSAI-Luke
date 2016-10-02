@@ -11,22 +11,50 @@ const create = (username, email) => {
     Pwoned.create(user)
 }
 
-const addPoint = (username, points) => {
-    const conditions = {username: username}
-    const update = {$inc: {points: points}}
+const addPoint = (winner, loser, points) => {
+
+    console.log(winner, loser, points);
     const options = { multi: false };
-    Pwoned.update(conditions, update, options, (err, value) => {})
-    const data = 'Player: ' + username + ' has own someone the : ' + Date.now()
-    Pwoned.update({username: username},
+
+    Pwoned.update({username: winner}, {$inc: {points: points}}, options, (err, value) => {})
+    Pwoned.update({username: loser}, {$inc: {points: points * -1}}, options, (err, value) => {})
+
+    const data = {
+      winner: winner,
+      loser: loser,
+      points: points,
+      date:  Date.now()
+    }
+
+    Pwoned.update({username: winner},
 		{'$push': {
 			'log': data,
 		}},
-		function(err,model) {
-			if(err){
-				console.log(err);
-			}
-  			console.log(model);
-		});
+    function(err,model) {
+      if(err){
+        console.log("err", err);
+      }
+        console.log("model", model);
+    });
+
+  const data_loose = {
+      winner: winner,
+      loser: loser,
+      points: points * -1,
+      date:  Date.now()
+    }
+
+  Pwoned.update({username: loser},
+    {'$push': {
+      'log': data_loose,
+    }},
+    function(err,model) {
+      if(err){
+        console.log("err", err);
+      }
+        console.log("model", model);
+    });
+
 }
 
 const getUser = (username) => {

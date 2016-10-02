@@ -9,6 +9,7 @@ const Pwoned = new Schema({
     idSlack: String,
     firstName: String,
     lastName: String,
+    img_24: String,
     points: {type: Number, default: 100},
     log:[]
 });

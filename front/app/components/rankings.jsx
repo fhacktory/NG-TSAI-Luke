@@ -1,13 +1,10 @@
 import React from 'react';
 
+import RankingList from './rankingList.jsx';
+
 const Rankings = ({rankings}) => (
-    <ul>
-        {rankings.map(rank =>
-            <li key={rank._id}>
-                {rank.username} : {rank.points}
-            </li>
-        )}
-    </ul>
+    <RankingList rankings={rankings}>
+    </RankingList>
 );
 
 export default Rankings;
