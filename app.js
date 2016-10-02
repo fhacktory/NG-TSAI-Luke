@@ -33,7 +33,7 @@ const userService = require('./app/services/user-service');
 const userManager = require('./app/managers/user-manager');
 userManager.registerUsersFromWs();
 
-const pwonedHelper = require('./pwoned.helper');
+const pwonedHelper = require('./app/services/pwoned.helper.js');
 
 const RtmClient = require('@slack/client').RtmClient;
 
