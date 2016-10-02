@@ -1,6 +1,7 @@
 const userService = require('./user-service');
 const Pwoned = require('../models/pwoned.model.js');
 const pointService = require('./point-service');
+const pwonedHelper = require('../../pwoned.helper');
 
 var player = require('play-sound')(opts = {})
 var last = [];
@@ -15,13 +16,28 @@ module.exports = {
 				// pwner[0] : Login avec <@ ... >
 				// pwner[1] : Id du user
 
-				player.play('assets/wasted.mp3', function(err){
-				    console.log(err);
-				}); // $ mplayer foo.mp3  
+				var user = userService.getUserById(message.user);
+    			noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
+	    			console.log("noobInfo", result.log);
+	    			console.log("lenght", result.log.length);
+	    			console.log("last", result.log[result.log.length - 1]);
 
-				rtm.sendMessage(userService.getUserById(message.user).name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
-				pointService.getPointToTransfert(userService.getUserById(message.user).name, userService.getUserById(pwner[1]).name);
-				return true;
+	    			var diff = (Date.now() - result.log[result.log.length - 1].date);
+
+	    			if (diff > 300000) {
+						player.play('assets/wasted.mp3', function(err){
+						    console.log(err);
+						}); // $ mplayer foo.mp3  
+
+						rtm.sendMessage(user.name+" s'est fait pwed par "+userService.getUserById(pwner[1]).name, message.channel);
+						pointService.getPointToTransfert(user.name, userService.getUserById(pwner[1]).name);
+
+						return true;
+					} else {
+						rtm.sendMessage("Vous devez patientez "+Math.ceil((300000 - diff) / 1000)+" secondes avant de pwed "+user.name, message.channel);
+						return false;
+					}
+    			});
 			}
 		}
 		return false;

@@ -18,6 +18,18 @@ router.get('/all', function (req, res) {
     })
 });
 
+router.get('/reset', function (req, res) {
+  Pwoned
+      .remove()
+      .exec((err, result) =>{
+        if (err){
+            res.send(err)
+        } else {
+            res.send(result)
+        }
+    })
+});
+
 
 
 module.exports = router;
