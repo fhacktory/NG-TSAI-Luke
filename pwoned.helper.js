@@ -11,12 +11,17 @@ const create = (username, email) => {
     Pwoned.create(user)
 }
 
-const addPoint = (username, points) => {
+const addPoint = (winner, loser, points) => {
     const conditions = {username: username}
     const update = {$inc: {points: points}}
     const options = { multi: false };
     Pwoned.update(conditions, update, options, (err, value) => {})
-    const data = 'Player: ' + username + ' has own someone the : ' + Date.now()
+    const data = {
+      winner: winner,
+      loser: loser,
+      points: points,
+      date:  Date.now()
+    }
     Pwoned.update({username: username},
 		{'$push': {
 			'log': data,
