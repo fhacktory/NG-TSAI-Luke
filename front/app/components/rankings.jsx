@@ -2,9 +2,10 @@ import React from 'react';
 
 import RankingList from './rankingList.jsx';
 
-const Rankings = ({rankings}) => (
-    <RankingList rankings={rankings}>
-    </RankingList>
+const Rankings = ({rankings, onRankClick}) => (
+    <RankingList rankings={rankings}
+                 onRankClick={onRankClick}
+    />
 );
 
 export default Rankings;

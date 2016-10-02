@@ -7,12 +7,13 @@ const style = {
     maxWidth: 300
 };
 
-const RankingList = ({rankings}) => (
+const RankingList = ({rankings, onRankClick}) => (
     <List style={style}>
         {rankings.map((rank, i) =>
             <Rank key={rank._id}
                   rank={rank}
                   index={i}
+                  onClick={() => onRankClick(i)}
             />
         )}
     </List>

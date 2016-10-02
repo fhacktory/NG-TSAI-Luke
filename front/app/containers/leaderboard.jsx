@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import Rankings from '../components/rankings.jsx';
+import {selectRank} from '../actions/ranking';
 
 const mapStateToProps = (state) => {
     return {
@@ -8,8 +9,17 @@ const mapStateToProps = (state) => {
     }
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onRankClick: (i) => {
+            dispatch(selectRank(i))
+        }
+    }
+};
+
 const Leaderboard = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Rankings);
 
 export default Leaderboard
