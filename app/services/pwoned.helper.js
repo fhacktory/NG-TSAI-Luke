@@ -4,7 +4,7 @@ const path = process.cwd();
 const Pwoned = require(path + '/app/models/pwoned.model.js')
 
 const create = (username, email) => {
-    var user = {
+    let user = {
         username: username,
         email: email
     };

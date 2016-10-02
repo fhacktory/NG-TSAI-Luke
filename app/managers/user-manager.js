@@ -1,3 +1,5 @@
+'use strict'
+
 const userManager = require('../services/user-service');
 const Pwoned = require('../models/pwoned.model.js');
 
