@@ -23,7 +23,7 @@ const Details = ({log}) => {
                 <TableBody>
                     {log.map((l, i) =>
                         <TableRow key={i}>
-                            <TableRowColumn>{l}</TableRowColumn>
+                            <TableRowColumn>{l.winner} à pwned {l.loser} à {l.date}</TableRowColumn>
                         </TableRow>
                     )}
                 </TableBody>
