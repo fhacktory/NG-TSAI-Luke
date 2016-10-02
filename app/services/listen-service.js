@@ -24,7 +24,6 @@ module.exports = {
             if (pwner !== null && pwner[0] !== null) {
                 // pwner[0] : Login avec <@ ... >
                 // pwner[1] : Id du user
-                makeItDanceBaby();
 
 				let user = userService.getUserById(message.user);
 				// partie génération du gif selon l'avatar 512
@@ -32,7 +31,9 @@ module.exports = {
     			var noobInfo = pwonedHelper.getUser(user.name).then(function(result, err) {
 					var diff = result.log.length ?(Date.now() - result.log[result.log.length - 1].date) : 300001;
 
-					if (diff > 300000 || message.text.indexOf("suzeforce") === 0 || result.log[result.log.length - 1].point > 0) {
+console.log(result.log[result.log.length - 1]);
+					if (diff > 300000 || message.text.indexOf("suzeforce") === 0 || result.log[result.log.length - 1].points > 0) {
+						makeItDanceBaby();
 						player.play('assets/wasted.mp3', function(err){
 						    console.log(err);
 						}); // $ mplayer foo.mp3
