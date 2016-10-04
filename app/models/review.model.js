@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const Review = new Schema({
     branch: String,
+    chanId: String,
     createdBy: String,
     assignTo: String,
     status: Boolean,
