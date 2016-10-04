@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const Review = new Schema({
     branch: String,
-    reatedBy: String,
+    createdBy: String,
     assignTo: String,
     status: Boolean,
     log:[]
